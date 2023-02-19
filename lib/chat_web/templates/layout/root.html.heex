@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="csrf-token" content={csrf_token_value()}>
+    <%= live_title_tag assigns[:page_title] || "Chat", suffix: " · Aplikacja Chatowa· " %>
+    <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
+    <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+  </head>
+  <body>
+    <div class="bigsquare">
+    <header>
+      <section class="container">
+        <nav>
+          <ul>
+            <li><a href="http://localhost:4000/regulamin" style="background: url(/images/blurry-gradient-haikei.png); background-repeat:repeat; border-radius: 10px; padding: 8px;
+              box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+                " >Regulamin</a></li>
+            <li><a href="http://localhost:4000/" style="background: url(/images/home.png); background-repeat:repeat; border-radius: 10px; padding: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+
+              " >Strona główna</a></li>
+
+          </ul>
+        </nav>
+        <h1 style="font-family: cursive; font-size: 40px;
+          text-shadow: 0 0 10px rgba(0,0,0,0.5);     ">Aplikacja Chatowa</h1>
+      </section>
+    </header>
+    <%= @inner_content %>
+  </div>
+  </body>
+</html>

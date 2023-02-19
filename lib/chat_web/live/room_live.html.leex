@@ -1,0 +1,373 @@
+<div class="phx-modal">
+  <div class="phx-modal-content ">
+    <div class="phx-modal-close" onClick="document.querySelector('.phx-modal').style.visibility = 'hidden';">X</div>
+    <h2>Ustawienia użytkownika</h2>
+    <form>
+        <label for="username">Zmień nazwę:</label>
+        <input type="text" id="username" name="username" value="<%= @username %>">
+
+         <label for="username">Zmień avatar:</label>
+
+
+
+
+         <div class="avatars">
+            <div class="avatar-choose">
+                <img src="/images/avatar/avatar-ghost.jpg" alt="ghost">
+            </div>
+            <div class="avatar-choose">
+                <img src="/images/avatar/avatar-devil.jpg" alt="devil">
+            </div>
+            <div class="avatar-choose">
+                <img src="/images/avatar/avatar-smutny.jpg" alt="smutny">
+            </div>
+            <div class="avatar-choose">
+                <img src="/images/avatar/avatar-klaun.jpg" alt="klaun">
+            </div>
+            <div class="avatar-choose">
+                <img src="/images/avatar/avatar-B.jpg" alt="B">
+            </div>
+            <div class="avatar-choose">
+                <img src="/images/avatar/avatar-serce.jpg" alt="serce">
+            </div>
+         </div>
+        <button value="Zapisz"
+        onClick="event.preventDefault();
+        update();
+        "
+
+        >Zapisz</button>
+    </form>
+  </div>
+</div>
+
+<div class="welcome">
+<p>
+Witaj, rozmawiasz teraz na kanale
+<select id="room-select" onChange="
+    var room = document.querySelector('#room-select').value;
+    window.location.href = '/rooms/' + room;
+    ">
+    <option value="lobby"><%= @room_id %> (<%=length(@user_list)%>)</option>
+    <option
+        value="<%= @channel1%>"
+    > <%= @channel1%> (0)</option>
+    <option
+            value="<%= @channel2%>"
+    ><%= @channel2%> (0)</option>
+    <option
+                value="<%= @channel3%>"
+    ><%= @channel3%> (0)</option>
+    <option
+                value="<%= @channel4%>"
+    ><%= @channel4%> (0)</option>
+    <option
+                value="<%= @channel5%>"
+    ><%= @channel5%> (0)</option>
+    <option
+            value="<%= @channel6%>"
+    ><%= @channel6%> (0)</option>
+</select> jako <span class="usernameI"><%= @username %></span>
+<br/>Aby zmienić nazwę oraz avatar kliknij obok swojej nazwy emotkę ⚙️
+
+</p>
+</div>
+<div class="rname-container">
+<input type="text" id="change-room" placeholder="Wpisz nazwę kanału">
+<input type="button" value="Ustaw" onClick="
+    event.preventDefault();
+    var room = document.querySelector('#change-room').value;
+    window.location.href = '/rooms/' + room + '?alert=true&title=Ustawiono%20nazwę%20kanału&message=Zmieniono%20nazwę%20kanału%20na%20%22' + room + '%22'
+">
+</div>
+
+<div id="chat-container">
+    <div id="chat-messages" phx-update="append">
+        <%= for message <- @messages do %>
+
+
+        <%= if String.starts_with?(message.content, "data:image") do %>
+            <div class="msg image" id="<%= message.uuid %>_div">
+                <%= if message.username == @username do %>
+                    <img class="avatar ghost"
+                    <%= if @avatar == "ghost" do %>
+                     src="/images/avatar/avatar-ghost.jpg"
+                    <% end %>
+                    <%= if @avatar == "devil" do %>
+                     src="/images/avatar/avatar-devil.jpg"
+                    <% end %>
+                    <%= if @avatar == "smutny" do %>
+                     src="/images/avatar/avatar-smutny.jpg"
+                    <% end %>
+                    <%= if @avatar == "klaun" do %>
+                     src="/images/avatar/avatar-klaun.jpg"
+                    <% end %>
+                    <%= if @avatar == "B" do %>
+                     src="/images/avatar/avatar-B.jpg"
+                    <% end %>
+                    <%= if @avatar == "serce" do %>
+                     src="/images/avatar/avatar-serce.jpg"
+                    <% end %>>
+
+                <%= else %>
+                    <img class="avatar ghost"
+                        <%= if message.avatar == "ghost"
+                        do %>
+                         src="/images/avatar/avatar-ghost.jpg"
+                        <% end %>
+                        <%= if message.avatar == "devil" do %>
+                         src="/images/avatar/avatar-devil.jpg"
+                        <% end %>
+                        <%= if message.avatar == "smutny" do %>
+                         src="/images/avatar/avatar-smutny.jpg"
+                        <% end %>
+                        <%= if message.avatar == "klaun" do %>
+                         src="/images/avatar/avatar-klaun.jpg"
+                        <% end %>
+                        <%= if message.avatar == "B" do %>
+                         src="/images/avatar/avatar-B.jpg"
+                        <% end %>
+                        <%= if message.avatar == "serce" do %>
+                         src="/images/avatar/avatar-serce.jpg"
+                        <% end %>>
+                <% end %>
+                <p class="message-username"  id="<%= message.uuid%>_username"><%= message.username %></p>
+                <img id="<%= message.uuid%>" class="message-image" src="<%= message.content %>"   alt="image"
+                    width="100" height="100"
+                >
+            </div>
+        <%= else %>
+            <%= if message.username == "system" do %>
+                <p class="msg" id="<%= message.uuid %>"><i><%= message.content %></i></p>
+            <% else %>
+                <%= if message.username == @username do %>
+                    <p class="msg" id="<%= message.uuid %>">               <img class="avatar ghost"
+                <%= if @avatar == "ghost" do %>
+                 src="/images/avatar/avatar-ghost.jpg"
+                <% end %>
+                <%= if @avatar == "devil" do %>
+                 src="/images/avatar/avatar-devil.jpg"
+                <% end %>
+                <%= if @avatar == "smutny" do %>
+                 src="/images/avatar/avatar-smutny.jpg"
+                <% end %>
+                <%= if @avatar == "klaun" do %>
+                 src="/images/avatar/avatar-klaun.jpg"
+                <% end %>
+                <%= if @avatar == "B" do %>
+                 src="/images/avatar/avatar-B.jpg"
+                <% end %>
+                <%= if @avatar == "serce" do %>
+                 src="/images/avatar/avatar-serce.jpg"
+                <% end %>><span><strong class="message-user you"><%= message.username %></strong> <%= message.content %></span></p>
+                <% else %>
+                    <p class="msg" id="<%= message.uuid %>">
+                        <img
+                        class="avatar ghost"
+                        <%= if message.avatar == "ghost" do %>
+                         src="/images/avatar/avatar-ghost.jpg"
+                        <% end %>
+                        <%= if message.avatar == "devil" do %>
+                         src="/images/avatar/avatar-devil.jpg"
+                        <% end %>
+                        <%= if message.avatar == "smutny" do %>
+                         src="/images/avatar/avatar-smutny.jpg"
+                        <% end %>
+                        <%= if message.avatar == "klaun" do %>
+                         src="/images/avatar/avatar-klaun.jpg"
+                        <% end %>
+                        <%= if message.avatar == "B" do %>
+                         src="/images/avatar/avatar-B.jpg"
+                        <% end %>
+                        <%= if message.avatar == "serce" do %>
+                         src="/images/avatar/avatar-serce.jpg"
+                        <% end %>
+
+
+                        ><span><strong class="message-user"><%= message.username %></strong> <%= message.content %></span></p>
+                <% end %>
+                <% end %>
+            <% end %>
+        <% end %>
+    </div>
+<div class="chat-users">
+    <div id="user-list">
+        <h3>Aktywni użytkownicy (<%= length(@user_list) %>)</h3>
+        <%= for user <- @user_list do %>
+            <%= if user == @username do %>
+            <div class="user current">
+                <span class="the_user" id="<%= user %>"><%= user %></span>
+                <img class="avatar ghost"
+                <%= if @avatar == "ghost" do %>
+                 src="/images/avatar/avatar-ghost.jpg"
+                <% end %>
+                <%= if @avatar == "devil" do %>
+                 src="/images/avatar/avatar-devil.jpg"
+                <% end %>
+                <%= if @avatar == "smutny" do %>
+                 src="/images/avatar/avatar-smutny.jpg"
+                <% end %>
+                <%= if @avatar == "klaun" do %>
+                 src="/images/avatar/avatar-klaun.jpg"
+                <% end %>
+                <%= if @avatar == "B" do %>
+                 src="/images/avatar/avatar-B.jpg"
+                <% end %>
+                <%= if @avatar == "serce" do %>
+                 src="/images/avatar/avatar-serce.jpg"
+                <% end %>> <span onClick='document.querySelector(".phx-modal").style.visibility = "visible"' class="settings" id="settings">⚙️</span>
+            </div>
+            <% else %>
+            <div class="user">
+                 <img class="avatar ghost"
+                    src="/images/avatar/avatar-ghost.jpg"
+
+
+
+                 ><span class="the_user" id="<%= user %>"><%= user %></span>
+
+
+            </div>
+            <% end %>
+        <% end %>
+    </div>
+</div>
+</div>
+
+<%= f = form_for :chat, "#", id: "chat-form", phx_submit: :submit_message, phx_change: :form_update %>
+<%= text_input f, :message, value: @message, placeholder: "Wyślij wiadomość..."
+%>
+<label for="file" class="file-label">wyślij zdjęcie</label>
+<input type="file" id="file" name="file" accept="image/*" style="display: none;" />
+
+<div id="emoji-label" class="emoji-label">
+    🤗
+    <emoji-picker></emoji-picker>
+</div>
+
+</form>
+
+
+<script>
+
+
+
+
+    document.querySelector('emoji-picker')
+  .addEventListener('emoji-click', event => {
+    console.log(event.detail);
+    let chatFormMessage = document.getElementById('chat-form_message');
+    chatFormMessage.value = chatFormMessage.value + " " + event.detail.unicode;
+
+    chatFormMessage.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            //event.preventDefault();
+            setTimeout(() => {
+                chatFormMessage.value = '';
+            }, 50)
+        }
+    });
+
+  });
+
+  document.querySelector('emoji-picker')
+  .addEventListener('focusout', event => {
+    document.querySelector('emoji-picker').style.display = 'none';
+  });
+
+  let emojiLabel =document.querySelector('#emoji-label');
+
+  emojiLabel.addEventListener('click', () => {
+    document.querySelector('emoji-picker').style.display = 'block';
+  })
+</script>
+
+
+
+<script>
+$(document).ready(function() {
+    // check query params for ?alert=true&alert_title=Title&alert_message=Message
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('alert')) {
+        var alert_title = urlParams.get('title');
+        var alert_message = urlParams.get('message');
+        alert(alert_title + ": " + alert_message);
+        window.history.replaceState({}, document.title, "/rooms/" + "<%= @topic %>");
+    }
+});
+
+// on enter
+$("#chat-form_message").on("keypress", function(e) {
+    if (e.keyCode == 13) {
+        if (this.value.length < 3) {
+            alert("Wiadomość musi mieć przynajmniej 3 znaki!");
+        } else if(this.value.length > 100) {
+            alert("Wiadomość nie może mieć więcej niż 100 znaków!");
+        }
+    }
+});
+
+$("#file").on("change", function() {
+    var file = this.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = function() {
+        var base64 = reader.result;
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
+        fetch("/upload", {
+            method: "POST",
+            headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": token
+            },
+            body: JSON.stringify({
+            file: base64,
+            username: "<%= @username %>",
+            roomid: "<%= @room_id %>"
+            })
+        }).then(response => response.json())
+
+    }
+});
+
+
+$(".avatar-choose").on("click", function() {
+    $(this).addClass("selected");
+    $(this).siblings().removeClass("selected");
+});
+
+
+function update() {
+    var token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    var username = document.querySelector("#username").value;
+    var avatar = document.querySelector(".selected img")?.alt || "<%= @avatar %>" || "ghost";
+
+    fetch("/update", {
+        method: "POST",
+        headers: {
+        "Content-Type": "application/json",
+        "X-CSRF-TOKEN": token
+        },
+        body: JSON.stringify({
+        oldusername: "<%= @username %>",
+        username: username,
+        roomid : "<%= @room_id %>",
+        avatar: avatar,
+        id: "<%= @id %>"
+        })
+    }).then(response => response.json())
+            .then(data => window.location.reload())
+}
+
+
+const chatMessages = document.getElementById("chat-messages");
+
+document.getElementById("chat-form").addEventListener("submit", function() {
+    chatMessages.scrollTop = chatMessages.scrollHeight - chatMessages.clientHeight;
+    //chatMessages.scrollTo(0, document.body.scrollHeight)
+});
+
+
+</script>
